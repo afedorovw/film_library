@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Контакты</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <h1 style="text-align: center; margin: 5% auto;">Связаться с нами</h1>
+    <form method="POST" class="col-lg-8" style="margin: 0 auto">
+        <!--        th:action="@{}" th:object="${}"-->
+
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="name" class="form-label"><b>Ваше имя</b></label>
+                    <input type="email" class="form-control" id="name"
+                           placeholder="name@example.com">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="e-mail" class="form-label"><b>Адрес почты</b></label>
+                    <input type="email" class="form-control" id="e-mail"
+                           placeholder="name@example.com">
+                </div>
+            </div>
+
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><b>Обращение</b></label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+    </form>
+
+    <button type="button" class="btn btn-secondary" style="float: right; margin-right: 20%"
+            onclick="window.history.back()">Назад
+    </button>
+    <button type="submit" class="btn btn-primary" value="Save Changes"
+            style="float: right; margin-right: 1%">Отправить
+    </button>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Онлайн фильмотека</title>
+    <style>
+        #carouselExampleInterval {
+            width: 40%;
+            margin: 17% auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body th:style="'background: url(/img/wall.jpg) no-repeat center center fixed; background-size: 100%'">
+<div layout:fragment="content">
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="3000">
+                <h4>«Мы снимаем фильмы не для того, чтобы зарабатывать деньги, мы делаем деньги, чтобы снимать больше
+                    фильмов»</h4>
+                <p><br>Уолт Дисней</p>
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <h4> «Хотя я пишу сценарии, я не думаю, что я хороший писатель»</h4>
+                <p><br>Джордж Лукас</p>
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <h4>«Кино — это вопрос того, что в кадре, а что снаружи»</h4>
+                <p><br>Мартин Скорсезе</p>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+</body>
+</html>

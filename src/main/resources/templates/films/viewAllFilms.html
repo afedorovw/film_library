@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Все фильмы</title>
+    <script th:inline="javascript">
+        let flag = [[${exception}]];
+        window.onload = () => {
+            if (flag) new bootstrap.Modal(document.getElementById('deleteErrorModal'), {keyboard: false}).show()
+        };
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="accordion" id="accordionExample" style="padding-top: 1%">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                    <p><strong>Поиск фильма</strong></p>
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div>
+                        <form method="POST" th:action="@{/films/search}" th:object="${filmSearchForm}">
+                            <div class="mt-0 row g-2">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input name="filmTitle" type="text" class="form-control" id="filmTitle"
+                                               placeholder="Название фильма">
+                                        <label for="filmTitle">Название фильма</label>
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <button type="submit" class="btn btn-secondary">Найти фильм</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="mt-3 hr"/>
+    <div class="mt-5">
+        <div class="row">
+            <div class="col">
+                <h2>Все фильмы</h2>
+            </div>
+            <div class="col">
+                <a sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MODERATOR'))"
+                   th:href="@{/films/add}"
+                   class="btn btn-success"
+                   role="button"
+                   style="float: right"
+                   aria-disabled="true">Добавить фильм</a>
+            </div>
+        </div>
+        <div>
+            <table class="table table-hover mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">Название</th>
+                    <th scope="col">Жанр</th>
+                    <th scope="col">Дата премьеры</th>
+                    <th scope="col">Режиссер(ы)</th>
+                    <!--                    <th scope="col">Онлайн копия</th>-->
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="film : ${films}">
+                    <td>
+                        <a class="text-link text-blue" th:href="'/films/' + ${film.getId()}"
+                           th:text="${film.getTitle()}"></a>
+                    </td>
+                    <td th:text="${film.getGenre().getGenreTextDisplay()}"></td>
+                    <td th:text="${film.getPremierYear()}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="director : ${film.getDirectorsInfo()}"
+                                th:text="${director.getDirectorsFIO()}"></li>
+                        </ul>
+                    </td>
+                    <!--<td>
+                        <a class="text-link text-blue" th:if="${film.getOnlineCopyPath()} != null"
+                           th:href="@{|/films/download?filmId=${film.id}|}">
+                            <span>Скачать фильм</span>
+                        </a>
+                    </td>-->
+                    <td>
+                        <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MODERATOR'))">
+                            <a class="btn btn-sm btn-outline-success"
+                               th:href="'/films/update/' + ${film.id}">Обновить</a>
+                            <a th:if="${!film.isDeleted()}" class="btn btn-sm btn-outline-danger"
+                               th:href="'/films/delete/' + ${film.id}"
+                               onclick="return confirm('Вы действительно хотите удалить фильм?')">Удалить</a>
+                            <a th:if="${film.isDeleted()}" class="btn btn-sm btn-outline-warning"
+                               th:href="'/films/restore/' + ${film.getId()}">Восстановить</a>
+                        </div>
+                        <!--<a th:if="${film.getAmount() > 0}" sec:authorize="!hasRole('ADMIN')"-->
+                        <a sec:authorize="isAuthenticated() && !hasRole('ADMIN')"
+                           class="btn btn-sm btn-outline-success"
+                           th:href="'/orders/film/' + ${film.id}">Арендовать фильм</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--Модальное окно для ошибок старт-->
+        <div th:if="${exception != null && exception != ''}" class="modal fade" id="deleteErrorModal"
+             tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ошибка</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" th:text="${exception}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Модальное окно для ошибок конец-->
+        <div>
+            <nav aria-label="Pagination" th:if="${films.totalPages gt 0}">
+                <ul class="pagination justify-content-center font-weight-bold">
+                    <li class="page-item" th:classappend="${films.number eq 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/films?page={id}(id=${films.number lt 2 ? 1 : films.number})}"
+                           aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i eq films.number + 1} ? 'active'"
+                        th:each="i : ${#numbers.sequence( 1, films.totalPages, 1)}">
+                        <a class="page-link" th:href="@{/films?page={id}(id=${i})}" th:text="${i}"
+                           th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${films.number eq films.totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/films?page={id}(id=${films.number + 2})}"
+                           aria-label="Next" title="Next Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>

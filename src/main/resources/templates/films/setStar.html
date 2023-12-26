@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Арендовать фильм</title>
+</head>
+<body>
+<div layout:fragment="content" style="width: 50%; margin: 0 auto;">
+  <h1 class="mt-3 mb-3" th:text="'Оценка фильма '" style="text-align: center; margin: 5% auto"></h1>
+  <h4 class="mt-3 mb-3" th:text="'Название: ' + ${star.getTitle()}"></h4>
+
+  <form method="post" th:action="@{/films/setStar}" th:object="${starForm}">
+    <input type="hidden" name="filmId"
+           th:value="${star.getStars()}">
+    <div class="mt-3 row g-2">
+      <div class="col-md">
+        <div class="form-floating">
+          <input name="stars" th:value="${star.getStars()}" type="number" class="form-control"
+                 id="stars" placeholder="оценка">
+          <label for="stars">оценка</label>
+        </div>
+      </div>
+    </div>
+    <div class="mt-3 row g-2">
+      <button type="submit" class="btn btn-primary">Оценить</button>
+      <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

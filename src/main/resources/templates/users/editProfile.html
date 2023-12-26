@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Редактирование профиля</title>
+</head>
+<body>
+<div layout:fragment="content" style="width: 50%; margin: 0 auto;">
+    <h1 style="text-align: center; margin: 5% auto">Редактирование профиля</h1>
+    <form method="POST" class="col-lg-8" th:action="@{/users/profile/edit}" th:object="${userForm}">
+        <table class="table">
+            <tr>
+                <td><h6>Имя</h6></td>
+                <td>
+                    <input name="firstName" type="text" id="firstName" class="form-control"
+                           th:value="${userForm.getFirstName()}">
+                </td>
+            </tr>
+
+            <tr>
+                <td><h6>Фамилия</h6></td>
+                <td>
+                    <input name="lastName" type="text" id="lastName" class="form-control"
+                           th:value="${userForm.getLastName()}">
+                </td>
+            </tr>
+            <tr>
+                <td><h6>Дата рождения</h6></td>
+                <td>
+                    <input name="birthdate" type="text" id="birthdate" class="form-control"
+                           th:value="${userForm.getBirthDate()}">
+                </td>
+            </tr>
+            <tr>
+                <td><h6>Email</h6></td>
+                <td>
+                    <input name="email" type="text" id="email" class="form-control" th:value="${userForm.getEmail}">
+                </td>
+            </tr>
+            <tr>
+                <td><h6>Адрес</h6></td>
+                <td>
+                    <input name="address" type="text" id="address" class="form-control"
+                           th:value="${userForm.getAddress()}">
+                </td>
+            </tr>
+            <tr>
+                <td><h6>Телефон</h6></td>
+                <td>
+                    <input name="phone" type="text" id="phone" class="form-control" th:value="${userForm.getPhone()}">
+                </td>
+            </tr>
+            <tr>
+        </table>
+
+    </form>
+    <button type="button" class="btn btn-secondary" style="float: right; margin: 0 1%" onclick="window.history.back()">
+        Назад
+    </button>
+    <button type="submit" class="btn btn-primary" value="Save Changes" style="float: right">Сохранить</button>
+</div>
+</body>
+</html>

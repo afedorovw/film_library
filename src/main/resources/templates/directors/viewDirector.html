@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о режиссере</title>
+    <style>
+        label {
+            font-weight: bold
+        }
+    </style>
+</head>
+<body>
+<form layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-9" style="text-align: center; margin: 2% auto">
+                <h2 th:text="'Информация о режиссере'"></h2>
+            </div>
+            <div class="col-4">
+                <img th:src="${director.getPhoto()}" alt="" width="80%" height="95%">
+            </div>
+            <div class="col-6">
+                <form class="row g-1">
+                    <div class="mb-2 row">
+                        <label for="directorsFIO" class="col-sm-2 col-form-label no-border">Полное имя:</label>
+                        <div class="col-sm-10">
+                            <p th:text="${director.getDirectorsFIO()}" class="form-control-plaintext" id="directorsFIO">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label for="birthDate" class="col-sm-2 col-form-label">Дата рождения:</label>
+                        <div class="col-sm-10">
+                            <p th:text="${#temporals.format(director.getBirthDate(), 'dd.MM.yyyy')}"
+                               class="form-control-plaintext" id="birthDate">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label for="country" class="col-sm-2 col-form-label">Страна:</label>
+                        <div class="col-sm-10">
+                            <p th:text="${director.getCountry().getCountryTextDisplay()}" class="form-control-plaintext"
+                               id="country">
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label for="description" class="col-sm-2 col-form-label">Описание:</label>
+                        <div class="col-sm-10">
+                            <p th:text="${director.getDescription_dir()}" class="form-control-plaintext"
+                               id="description">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="mt-3">
+        <hr class="hr"/>
+        <div class="mt-2">
+            <form method="POST" th:object="${directorSearchForm}" th:action="@{/films/search/filmsByDirector}">
+                <a sec:authorize="isAuthenticated() && !hasRole('USER')" class="btn btn-primary"
+                   th:href="'/directors/add-film/' + ${director.getId()}">Добавить фильм</a>
+                <input type="hidden" name="directorsFIO"
+                       th:value="${director.getDirectorsFIO()}">
+                <button type="submit" class="btn btn-success">Посмотреть фильмы</button>
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+            </form>
+        </div>
+    </div>
+</form>
+</body>
+</html>

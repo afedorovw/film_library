@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+</head>
+<body>
+<div layout:fragment="content" style="width: 50%; margin: 0 auto;">
+    <h1 style="text-align: center; margin: 5% auto">Профиль пользователя</h1>
+    <table class="table">
+        <tr>
+            <td><b>Логин</b></td>
+            <td th:text="${profileForm.getLogin()}">
+                <div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Имя</b></td>
+            <td th:text="${profileForm.getFirstName()}">
+            </td>
+        </tr>
+        <tr>
+            <td><b>Фамилия</b></td>
+            <td th:text="${profileForm.getLastName()}">
+            </td>
+        </tr>
+        <tr>
+            <td><b>Дата рождения</b></td>
+            <td th:text="${#temporals.format(profileForm.getBirthDate(), 'dd.MM.yyyy')}">
+            </td>
+        </tr>
+        <tr>
+            <td><b>Email</b></td>
+            <td th:text="${profileForm.getEmail()}">
+            </td>
+        </tr>
+        <tr>
+            <td><b>Адрес</b></td>
+            <td th:text="${profileForm.getAddress()}">
+            </td>
+        </tr>
+        <tr>
+            <td><b>Телефон</b></td>
+            <td th:text="${profileForm.getPhone()}">
+            </td>
+        </tr>
+        <tr>
+    </table>
+    <div class="row">
+        <div class="col">
+            <a th:href="'/users/profile/edit/' + ${profileForm.id}"
+               class="btn btn-secondary"
+               role="button"
+               style="float: right"
+               aria-disabled="true">Изменить данные
+            </a>
+        </div>
+        <div class="col">
+            <a sec:authorize="isAuthenticated() && !(hasRole('ADMIN'))"
+               th:href="'/users/change-password?uuid=' + ${profileForm.id}"
+               class="btn btn-warning"
+               aria-disabled="true">Изменить пароль</a>
+        </div>
+        <div class="col">
+            <a sec:authorize="isAuthenticated() && (hasRole('ADMIN'))"
+               th:href="'/orders/user-films/' + ${profileForm.id}"
+               class="btn btn-primary"
+               aria-disabled="true">Арендованные книги</a>
+        </div>
+        <div class="col">
+            <!--<a sec:authorize="isAuthenticated() && !(hasRole('ADMIN'))"
+              th:if="${#authentication.getPrincipal().()} == ${profileForm.id}" class="btn btn-primary"
+              th:href="${'/users/profile/edit/' + ${profileForm.id}">Редактировать</a>-->
+        </div>
+        <button type="button" class="btn btn-secondary" style="margin-top: 1%"
+                onclick="window.history.back()">Назад
+        </button>
+    </div>
+</div>
+</body>
+</html>

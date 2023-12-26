@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление режиссера</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3 class="mt-3 mb-3">Добавить режиссера</h3>
+    <form class="needs-validation" novalidate style="max-width: 50vw" method="POST" th:action="@{/directors/add}"
+          th:object="${directorForm}">
+        <div class="mt-3 row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+
+                    <input name="directorsFIO" type="text" class="form-control" id="directorsFIO"
+                           placeholder="ФИО режиссера" required>
+                    <label for="directorsFIO">Полное имя</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="birthDate" type="date" class="form-control" id="date" placeholder="Дата рождения"
+                           required>
+                    <label for="date">Дата рождения</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <select class="form-select" name="country" id="country" required>
+                        <option th:each="country : ${T(ru.edu.filmlibrary.library.model.Country).values()}"
+                                th:value="${country}" th:text="${country.getCountryTextDisplay()}"></option>
+                    </select>
+                    <label for="country">Страна</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <textarea name="description_dir" type="text" class="form-control" id="description_dir"
+                              placeholder="Описание"></textarea>
+                    <label for="description_dir">Описание</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 row g-2">
+            <button type="submit" class="btn btn-primary" onclick="validateForm()">Добавить</button>
+            <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
