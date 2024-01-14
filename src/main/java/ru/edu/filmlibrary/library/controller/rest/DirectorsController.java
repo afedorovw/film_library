@@ -1,48 +1,42 @@
 package ru.edu.filmlibrary.library.controller.rest;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import ru.edu.filmlibrary.library.dto.AddFilmDTO;
 import ru.edu.filmlibrary.library.dto.DirectorsDTO;
+import ru.edu.filmlibrary.library.model.Directors;
 import ru.edu.filmlibrary.library.service.DirectorsService;
 
-import java.util.List;
-
+@Hidden
 @RestController
 @RequestMapping("/api/rest/directors")
+@SecurityRequirement(name = "Bearer Authentication")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Tag(name = "Режиссеры", description = "Контроллер для работы с режиссерами фильмов")
-public class DirectorsController {
+public class DirectorsController extends GenericController<Directors, DirectorsDTO> {
 
-    private final DirectorsService service;
-
-    public DirectorsController(DirectorsService service) {
-        this.service = service;
+    public DirectorsController(DirectorsService directorsService) {
+        super(directorsService);
     }
 
-    @Operation(description = "Получить все записи", method = "getAll")
-    @RequestMapping(value = "/getAll",
-            method = RequestMethod.GET,
+    @Operation(description = "Добавить фильм к режиссеру")
+    @RequestMapping(value = "/addFilm", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<DirectorsDTO>> getAll() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(service.listAll());
-    }
+    public ResponseEntity<DirectorsDTO> addFilm(@RequestParam(value = "filmId") Long filmId,
+                                                @RequestParam(value = "directorId") Long directorId) {
+        AddFilmDTO addFilmDTO = new AddFilmDTO();
+        addFilmDTO.setDirectorId(directorId);
+        addFilmDTO.setFilmId(filmId);
 
-    @Operation(description = "Получить запись по ID", method = "getOneByID")
-    @RequestMapping(value = "/getOneById",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DirectorsDTO> getOneById(@RequestParam(value = "id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.getOne(id));
+                .body(((DirectorsService) service)
+                        .addFilm(addFilmDTO));
     }
 }

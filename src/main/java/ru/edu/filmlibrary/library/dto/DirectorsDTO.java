@@ -23,33 +23,24 @@ public class DirectorsDTO extends GenericDTO {
     private String photo;
     private List<Long> filmsIds;
 
-    public DirectorsDTO(
-            String fio,
-            LocalDate date,
-            Country country,
-            String description,
-            List<Long> filmIds
-    ) {
-        this.directorsFIO = fio;
-        this.birthDate = date;
-        this.country = country;
-        this.description_dir = description;
-        this.filmsIds = filmIds;
-    }
-
-   /* public DirectorsDTO(Directors directors) {
-        this.directorsFIO = directors.getDirectorsFIO();
+    public DirectorsDTO(Directors directors) {
         this.birthDate = directors.getBirthDate();
-        this.country = directors.getCountry();
-        1
-        this.description_dir = directors.getDescription_dir();
         this.createdBy = directors.getCreatedBy();
+        this.directorsFIO = directors.getDirectorsFIO();
+        this.description_dir = directors.getDescription_dir();
         this.createdWhen = directors.getCreatedWhen();
         this.id = directors.getId();
         List<Films> films = directors.getFilms();
-        List<Long> filmId = new ArrayList<>();
-        films.forEach(b -> filmId.add(b.getId()));
-        this.filmsIds = filmId;
+        List<Long> filmsIds = new ArrayList<>();
+        films.forEach(b -> filmsIds.add(b.getId()));
+        this.filmsIds = filmsIds;
         this.isDeleted = false;
-    }*/
+    }
+
+    public DirectorsDTO(String fio, LocalDate date, String description, List<Long> filmIds) {
+        this.directorsFIO = fio;
+        this.birthDate = date;
+        this.description_dir = description;
+        this.filmsIds = filmIds;
+    }
 }

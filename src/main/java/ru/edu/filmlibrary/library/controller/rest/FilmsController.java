@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ru.edu.filmlibrary.library.constants.Errors;
 import ru.edu.filmlibrary.library.dto.FilmsDTO;
+import ru.edu.filmlibrary.library.model.Films;
 import ru.edu.filmlibrary.library.service.FilmsService;
 
 import java.util.List;
@@ -18,31 +20,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rest/films")
 @Tag(name = "Фильмы", description = "Контроллер для работы с фильмами")
-public class FilmsController {
-
-    private final FilmsService service;
+public class FilmsController extends GenericController<Films, FilmsDTO> {
 
     public FilmsController(FilmsService service) {
-        this.service = service;
+        super(service);
     }
 
-    @Operation(description = "Получить все записи", method = "getAll")
-    @RequestMapping(value = "/getAll",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FilmsDTO>> getAll() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(service.listAll());
-    }
+    @Operation(description = "Добавить фильм к редиссеру")
+    @RequestMapping(value = "/addDirector", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FilmsDTO> addDirector(@RequestParam(value = "filmId") Long filmId,
+                                                @RequestParam(value = "directorId") Long directorId) {
 
-    @Operation(description = "Получить запись по ID", method = "getOneByID")
-    @RequestMapping(value = "/getOneById",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FilmsDTO> getOneById(@RequestParam(value = "id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.getOne(id));
+                .body(((FilmsService) service)
+                        .addDirector(filmId, directorId));
     }
 }
