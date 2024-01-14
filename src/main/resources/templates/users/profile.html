@@ -68,7 +68,7 @@
             <a sec:authorize="isAuthenticated() && (hasRole('ADMIN'))"
                th:href="'/orders/user-films/' + ${profileForm.id}"
                class="btn btn-primary"
-               aria-disabled="true">Арендованные книги</a>
+               aria-disabled="true">Арендованные фильмы</a>
         </div>
         <div class="col">
             <!--<a sec:authorize="isAuthenticated() && !(hasRole('ADMIN'))"
