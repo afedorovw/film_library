@@ -1,4 +1,4 @@
-package ru.edu.filmlibrary.mvccontrollers;
+package ru.edu.filmlibrary.controllers.mvc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

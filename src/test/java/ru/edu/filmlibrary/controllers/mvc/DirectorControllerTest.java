@@ -1,4 +1,4 @@
-package ru.edu.filmlibrary.mvccontrollers;
+package ru.edu.filmlibrary.controllers.mvc;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.edu.filmlibrary.library.dto.DirectorsDTO;
-import ru.edu.filmlibrary.library.model.Country;
 import ru.edu.filmlibrary.library.service.DirectorsService;
 
 import java.time.LocalDate;
@@ -39,7 +38,6 @@ public class DirectorControllerTest extends CommonTestMVC {
     private final DirectorsDTO directorDTO = new DirectorsDTO(
             "Test_Director",
             LocalDate.of(1971, 2, 21),
-            Country.UNITED_KINGDOM,
             "MVC_descTest",
             new ArrayList<>()
     );
@@ -47,7 +45,6 @@ public class DirectorControllerTest extends CommonTestMVC {
     private final DirectorsDTO directorDTOUpdated = new DirectorsDTO(
             "Test_DirectorUpd",
             LocalDate.of(1986, 7, 12),
-            Country.USA,
             "MVC_descUpd",
             new ArrayList<>()
     );

@@ -1,4 +1,4 @@
-package ru.edu.filmlibrary.mvccontrollers;
+package ru.edu.filmlibrary.controllers.mvc;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.edu.filmlibrary.library.dto.DirectorsDTO;
 import ru.edu.filmlibrary.library.dto.FilmsDTO;
-import ru.edu.filmlibrary.library.model.Country;
 import ru.edu.filmlibrary.library.model.Genre;
 import ru.edu.filmlibrary.library.service.FilmsService;
 
@@ -52,7 +51,6 @@ public class FilmControllerTest extends CommonTestMVC {
     private final DirectorsDTO directorDTO = new DirectorsDTO(
             "Test_DirectorFilm",
             LocalDate.of(1971, 2, 21),
-            Country.UNITED_KINGDOM,
             "MVC_descTest",
             new ArrayList<>()
     );
